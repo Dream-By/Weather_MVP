@@ -8,4 +8,5 @@
         android:id="@+id/forecastWeatherFragment"
         android:icon="@drawable/ic_calendar_week"
         android:title="5 Days"/>
+
 </menu>
