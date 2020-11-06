@@ -7,6 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.weather_mvp.R
+import com.example.weather_mvp.network.WeatherApi
+import kotlinx.android.synthetic.main.today_weather_fragment.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class TodayWeatherFragment : Fragment() {
 
@@ -28,6 +33,13 @@ class TodayWeatherFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(TodayWeatherViewModel::class.java)
         // TODO: Use the ViewModel
+        val weatherApi = WeatherApi()
+
+        GlobalScope.launch (Dispatchers.Main) {
+            val weatherDay = weatherApi.getToday("Gomel").await()
+            textViewToday.text =weatherDay.main.toString()
+
+        }
     }
 
 }
