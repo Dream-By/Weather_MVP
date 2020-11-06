@@ -8,5 +8,9 @@
         android:id="@+id/forecastWeatherFragment"
         android:icon="@drawable/ic_calendar_week"
         android:title="5 Days"/>
+    <item
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/ic_settings"
+        android:title="Settings"/>
 
 </menu>

@@ -21,4 +21,8 @@
         android:name="com.example.weather_mvp.weather.forecast.detail.DetailWeatherFragment"
         android:label="detail_weather_fragment"
         tools:layout="@layout/detail_weather_fragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.weather_mvp.settings.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>
