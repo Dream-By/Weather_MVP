@@ -15,6 +15,7 @@ import retrofit2.http.Query
 //Forecast http://api.openweathermap.org/data/2.5/forecast?q=Gomel&appid=4641d46a5986914b30ab23eadcc7b822
 
 const val API_KEY = "4641d46a5986914b30ab23eadcc7b822"
+const val getIconUrl = "http://openweathermap.org/img/w/"
 
 interface WeatherApi {
 
