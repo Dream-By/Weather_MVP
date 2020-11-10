@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.weather_mvp.R
 import com.example.weather_mvp.network.WeatherApi
 import com.example.weather_mvp.network.getIconUrl
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.today_weather_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -31,6 +32,7 @@ class TodayWeatherFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        activity?.toolbar?.setTitle("Текущий прогноз на сегодня")
         return inflater.inflate(R.layout.today_weather_fragment, container, false)
     }
 

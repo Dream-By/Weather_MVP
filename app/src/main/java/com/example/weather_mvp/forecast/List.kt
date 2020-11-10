@@ -2,8 +2,9 @@ package com.example.weather_mvp.forecast
 
 
 import com.google.gson.annotations.SerializedName
+import kotlin.collections.List
 
-data class Item(
+data class List(
     @SerializedName("clouds")
     val clouds: Clouds,
     @SerializedName("dt")
