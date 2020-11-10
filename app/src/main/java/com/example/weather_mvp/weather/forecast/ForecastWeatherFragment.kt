@@ -8,9 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_mvp.R
+import com.example.weather_mvp.RecyclerItemClickListener
 import com.example.weather_mvp.WeatherAdapter
 import com.example.weather_mvp.forecast.List
 import com.example.weather_mvp.network.WeatherApi
@@ -53,6 +55,19 @@ class ForecastWeatherFragment : Fragment() {
             if (rw != null) {
                 rw.layoutManager = LinearLayoutManager(context,LinearLayout.VERTICAL,false)
                 rw.adapter =adapter
+                //кодим для item
+                rw.addOnItemTouchListener(RecyclerItemClickListener(activity!!,rw,object:RecyclerItemClickListener.OnItemClickListener{
+                    override fun onItemClick(view: View, position: Int) {
+                        Toast.makeText(activity, "position $position", Toast.LENGTH_SHORT).show()
+                        //переход на detailfragment
+
+                    }
+
+                    override fun onItemLongClick(view: View?, position: Int) {
+                        Toast.makeText(activity, "It's working onItemLongClick", Toast.LENGTH_SHORT).show()
+                    }
+
+                }))
             }
         }
     }

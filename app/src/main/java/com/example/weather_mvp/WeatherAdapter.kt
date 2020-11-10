@@ -7,18 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.weather_mvp.WeatherAdapter.ViewHolder
 import com.example.weather_mvp.forecast.List
+import com.example.weather_mvp.forecast.Weather
 import com.example.weather_mvp.network.getIconUrl
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.time.LocalDateTime
 
-class WeatherAdapter(context: Context,val weatherForecast : ArrayList<List>) : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
+class WeatherAdapter(context: Context,val weatherForecast : ArrayList<List>) : RecyclerView.Adapter<ViewHolder>() {
 
-    val context = context
+    private val context = context
 
     class ViewHolder(itemView : View) :RecyclerView.ViewHolder(itemView){
 
@@ -36,9 +39,9 @@ class WeatherAdapter(context: Context,val weatherForecast : ArrayList<List>) : R
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val v = LayoutInflater.from(parent.context).inflate(R.layout.forecast_weather,parent,false)
-            return WeatherAdapter.ViewHolder(v)
+            return ViewHolder(v)
     }
 
     override fun getItemCount(): Int {
@@ -47,7 +50,7 @@ class WeatherAdapter(context: Context,val weatherForecast : ArrayList<List>) : R
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onBindViewHolder(holder: WeatherAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         //val weatherArray : Item = weatherForecast[position]
 
         val temp = (weatherForecast[position].main.temp.toFloat()-273.15).toInt().toString()+"°C"
@@ -56,5 +59,6 @@ class WeatherAdapter(context: Context,val weatherForecast : ArrayList<List>) : R
         val date = LocalDateTime.now().plusDays(position.toLong()).format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
         holder.bind(temp,description,iconulr,date)
 
-    }
+        
+        }
 }
