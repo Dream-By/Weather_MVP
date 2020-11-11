@@ -1,10 +1,9 @@
-package com.example.weather_mvp
+package com.example.weather_mvp.adapters
 
 import android.content.Context
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
-import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 
 class RecyclerItemClickListener (context: Context, recyclerView: RecyclerView, private val mListener: OnItemClickListener?) : RecyclerView.OnItemTouchListener {

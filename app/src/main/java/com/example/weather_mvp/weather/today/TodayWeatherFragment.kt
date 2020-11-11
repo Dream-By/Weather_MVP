@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import com.bumptech.glide.Glide
 import com.example.weather_mvp.R
+import com.example.weather_mvp.adapters.City_Name
 import com.example.weather_mvp.network.WeatherApi
 import com.example.weather_mvp.network.getIconUrl
 import kotlinx.android.synthetic.main.activity_main.*
@@ -19,7 +20,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
-class TodayWeatherFragment : Fragment() {
+class TodayWeatherFragment : Fragment(),City_Name {
 
     companion object {
         fun newInstance() =
@@ -32,7 +33,6 @@ class TodayWeatherFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        activity?.toolbar?.setTitle("Текущий прогноз на сегодня")
         return inflater.inflate(R.layout.today_weather_fragment, container, false)
     }
 
@@ -40,7 +40,9 @@ class TodayWeatherFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(TodayWeatherViewModel::class.java)
-        // TODO: Use the ViewModel
+
+        City_Name("Gomel")
+
         val weatherApi = WeatherApi()
 
         GlobalScope.launch (Dispatchers.Main) {
@@ -48,7 +50,7 @@ class TodayWeatherFragment : Fragment() {
             val weatherDay = weatherApi.getToday("Gomel").await()
 
 
-            textViewToday.text = "Обновлено: " + LocalDateTime.now().hour+":"+LocalDateTime.now().minute
+            //textViewToday.text = "Обновлено: " + LocalDateTime.now().hour+":"+LocalDateTime.now().minute
             textViewTodayCity.text = weatherDay.name
             textViewTodayTemp.text = (weatherDay.main.temp.toFloat()-273.15).toInt().toString() + "°C"
             textViewTodayTempMinMax.text = (weatherDay.main.temp.toFloat()-273.15).toInt().toString() + "°C"+" / "+(weatherDay.main.feelsLike.toFloat()-273.15).toInt().toString()+"°C"
@@ -56,6 +58,10 @@ class TodayWeatherFragment : Fragment() {
             textViewDescription.text = weatherDay.weather[0].description
 
         }
+    }
+
+    override fun City_Name(City: String) {
+        activity?.toolbar?.setTitle("Текущий прогноз, $City")
     }
 
 }

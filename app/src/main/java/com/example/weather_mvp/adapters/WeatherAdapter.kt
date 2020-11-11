@@ -1,4 +1,4 @@
-package com.example.weather_mvp
+package com.example.weather_mvp.adapters
 
 import android.content.Context
 import android.os.Build
@@ -7,13 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.weather_mvp.WeatherAdapter.ViewHolder
+import com.example.weather_mvp.R
+import com.example.weather_mvp.adapters.WeatherAdapter.ViewHolder
 import com.example.weather_mvp.forecast.List
-import com.example.weather_mvp.forecast.Weather
 import com.example.weather_mvp.network.getIconUrl
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -26,7 +25,9 @@ class WeatherAdapter(context: Context,val weatherForecast : ArrayList<List>) : R
     class ViewHolder(itemView : View) :RecyclerView.ViewHolder(itemView){
 
             private val temperature_text : TextView = itemView.findViewById(R.id.textViewTemperature)
-            private val weatherdescription_text : TextView = itemView.findViewById(R.id.textViewDescription)
+            private val weatherdescription_text : TextView = itemView.findViewById(
+                R.id.textViewDescription
+            )
             private val weatherIcon : ImageView = itemView.findViewById(R.id.imageViewIconWeather)
             private val dateForDays : TextView = itemView.findViewById(R.id.textViewDate)
 
