@@ -51,7 +51,7 @@ class DetailWeatherFragment : Fragment(),City_Name {
         val weatherApi = WeatherApi()
         val position = arguments?.getInt("position")
         val city = arguments?.getString("city")
-
+        val date = arguments?.getString("date")
         if (city != null) {
             City_Name(city)
         }
@@ -60,7 +60,7 @@ class DetailWeatherFragment : Fragment(),City_Name {
 
             val weatherDetail = weatherApi.getForecast("Gomel").await()
 
-
+            textViewDetailDate.text = date
             textViewTodayCity.text = weatherDetail.city.name
             textViewTodayTemp.text = (weatherDetail.list[position!!].main.temp.toFloat()-273.15).toInt().toString() + "°C"
             textViewTodayTempMinMax.text = (weatherDetail.list[position].main.temp.toFloat()-273.15).toInt().toString() + "°C"+" / "+(weatherDetail.list[position].main.feelsLike.toFloat()-273.15).toInt().toString()+"°C"

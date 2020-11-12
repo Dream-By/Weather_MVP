@@ -16,14 +16,28 @@
         android:textSize="12sp" />
 
     <TextView
+        android:id="@+id/textViewDetailDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="Date"
+        android:textColor="@color/design_default_color_background"
+        app:layout_constraintBottom_toTopOf="@+id/textViewTodayCity"
+        app:layout_constraintEnd_toStartOf="@+id/textViewToday"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textViewToday" />
+
+    <TextView
         android:id="@+id/textViewTodayCity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
+        android:text="City"
         android:textColor="@color/design_default_color_background"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/textViewTodayTemp"
         app:layout_constraintEnd_toStartOf="@+id/textViewToday"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textViewToday" />
 
     <TextView
@@ -31,6 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:text="temp"
         android:textColor="@color/design_default_color_background"
         android:textSize="96sp"
         app:layout_constraintBottom_toBottomOf="@+id/textViewToday"

@@ -1,12 +1,14 @@
 package com.example.weather_mvp.weather.forecast
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
@@ -21,9 +23,13 @@ import com.example.weather_mvp.adapters.WeatherAdapter
 import com.example.weather_mvp.forecast.List
 import com.example.weather_mvp.network.WeatherApi
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.forecast_weather.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 
 class ForecastWeatherFragment : Fragment(),City_Name {
@@ -72,17 +78,19 @@ class ForecastWeatherFragment : Fragment(),City_Name {
                         rw,
                         object :
                             RecyclerItemClickListener.OnItemClickListener {
+                            @RequiresApi(Build.VERSION_CODES.O)
                             override fun onItemClick(view: View, position: Int) {
                                 Toast.makeText(activity, "position $position", Toast.LENGTH_SHORT)
                                     .show()
                                 //переход на detailfragment
                                 try {
-                                    //(activity as City_Name).City_Name("Gomel")
-                                    //(activity as List_Position).List_Position(position)
                                     val bundle = Bundle()
                                     bundle.putInt("position",position)
                                     val city = "Gomel"
                                     bundle.putString("city",city)
+                                    val date = LocalDateTime.now().plusDays(position.toLong()).format(
+                                        DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
+                                    bundle.putString("date",date)
                                     view.findNavController().navigate(R.id.detailWeatherFragment,bundle)
                                     }
                                 catch (ignored : ClassCastException) {}
