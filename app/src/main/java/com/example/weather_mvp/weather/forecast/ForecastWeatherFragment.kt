@@ -10,10 +10,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_mvp.R
 import com.example.weather_mvp.adapters.City_Name
+import com.example.weather_mvp.adapters.List_Position
 import com.example.weather_mvp.adapters.RecyclerItemClickListener
 import com.example.weather_mvp.adapters.WeatherAdapter
 import com.example.weather_mvp.forecast.List
@@ -75,11 +77,16 @@ class ForecastWeatherFragment : Fragment(),City_Name {
                                     .show()
                                 //переход на detailfragment
                                 try {
-                                    (activity as City_Name).City_Name("Gomel")
-                                }
+                                    //(activity as City_Name).City_Name("Gomel")
+                                    //(activity as List_Position).List_Position(position)
+                                    val bundle = Bundle()
+                                    bundle.putInt("position",position)
+                                    val city = "Gomel"
+                                    bundle.putString("city",city)
+                                    view.findNavController().navigate(R.id.detailWeatherFragment,bundle)
+                                    }
                                 catch (ignored : ClassCastException) {}
 
-                                view.findNavController().navigate(R.id.detailWeatherFragment)
                             }
 
                             override fun onItemLongClick(view: View?, position: Int) {
