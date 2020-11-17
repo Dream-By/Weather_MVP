@@ -7,11 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.weather_mvp.R
+import kotlinx.android.synthetic.main.activity_main.*
 
-class SettingsFragment : Fragment() {
+class Settings : Fragment() {
 
     companion object {
-        fun newInstance() = SettingsFragment()
+        fun newInstance() = Settings()
     }
 
     private lateinit var viewModel: SettingsViewModel
@@ -26,7 +27,7 @@ class SettingsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SettingsViewModel::class.java)
-        // TODO: Use the ViewModel
+        activity?.toolbar?.setTitle("Выбор города:")
     }
 
 }
