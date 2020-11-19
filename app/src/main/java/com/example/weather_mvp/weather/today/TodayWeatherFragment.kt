@@ -1,5 +1,7 @@
 package com.example.weather_mvp.weather.today
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -8,6 +10,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.navigation.NavArgument
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.weather_mvp.R
 import com.example.weather_mvp.adapters.City_Name
@@ -40,19 +48,34 @@ class TodayWeatherFragment : Fragment(),City_Name {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(TodayWeatherViewModel::class.java)
+        //делаем sharedpreferences
 
-        City_Name("Gomel")
+            var cityPrefGet : SharedPreferences? = activity?.getSharedPreferences("city", Context.MODE_PRIVATE)
+            var city = cityPrefGet?.getString("city","").toString()
+            if (city == ""){
+                city = "Gomel"
+            }
+
+        // if (arguments !=null ) {
+       //     city = arguments?.getString("city").toString()
+        //}
+
+
+        City_Name(city)
+        System.out.println("city: - " + city)
 
         val weatherApi = WeatherApi()
 
         GlobalScope.launch (Dispatchers.Main) {
 
-            val weatherDay = weatherApi.getToday("Gomel").await()
+            val weatherDay = city?.let { weatherApi.getToday(it).await() }
 
 
             //textViewToday.text = "Обновлено: " + LocalDateTime.now().hour+":"+LocalDateTime.now().minute
-            textViewTodayCity.text = weatherDay.name
-            textViewTodayTemp.text = (weatherDay.main.temp.toFloat()-273.15).toInt().toString() + "°C"
+            if (weatherDay != null) {
+                textViewTodayCity.text = weatherDay.name
+            }
+            textViewTodayTemp.text = (weatherDay!!.main.temp.toFloat()-273.15).toInt().toString() + "°C"
             textViewTodayTempMinMax.text = (weatherDay.main.temp.toFloat()-273.15).toInt().toString() + "°C"+" / "+(weatherDay.main.feelsLike.toFloat()-273.15).toInt().toString()+"°C"
             Glide.with(imageView.context).load(getIconUrl + weatherDay.weather[0].icon + ".png").into(imageView)
             textViewDescription.text = weatherDay.weather[0].description
@@ -60,8 +83,8 @@ class TodayWeatherFragment : Fragment(),City_Name {
         }
     }
 
-    override fun City_Name(City: String) {
-        activity?.toolbar?.setTitle("Текущий прогноз, $City")
+    override fun City_Name(city: String) {
+        activity?.toolbar?.setTitle("Текущий прогноз, $city")
     }
 
 }

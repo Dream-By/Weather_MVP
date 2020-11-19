@@ -1,5 +1,7 @@
 package com.example.weather_mvp.weather.forecast.detail
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -52,13 +54,15 @@ class DetailWeatherFragment : Fragment(),City_Name {
         val position = arguments?.getInt("position")
         val city = arguments?.getString("city")
         val date = arguments?.getString("date")
+
+
         if (city != null) {
             City_Name(city)
         }
 
         GlobalScope.launch(Dispatchers.Main) {
 
-            val weatherDetail = weatherApi.getForecast("Gomel").await()
+            val weatherDetail = weatherApi.getForecast(city!!).await()
 
             textViewDetailDate.text = date
             textViewTodayCity.text = weatherDetail.city.name

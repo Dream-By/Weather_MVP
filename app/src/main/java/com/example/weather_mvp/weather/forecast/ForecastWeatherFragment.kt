@@ -1,6 +1,8 @@
 package com.example.weather_mvp.weather.forecast
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -52,13 +54,19 @@ class ForecastWeatherFragment : Fragment(),City_Name {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(ForecastWeatherViewModel::class.java)
 
-        City_Name("Gomel")
+        var cityPrefGet : SharedPreferences? = activity?.getSharedPreferences("city", Context.MODE_PRIVATE)
+        var city = cityPrefGet?.getString("city","").toString()
+        if (city == ""){
+            city = "Gomel"
+        }
+
+        City_Name(city)
 
         val weatherApi = WeatherApi()
 
         GlobalScope.launch(Dispatchers.Main) {
 
-            val weatherForecast = weatherApi.getForecast("Gomel").await()
+            val weatherForecast = weatherApi.getForecast(city).await()
 
             val adapter = context?.let {
                 WeatherAdapter(
@@ -86,7 +94,9 @@ class ForecastWeatherFragment : Fragment(),City_Name {
                                 try {
                                     val bundle = Bundle()
                                     bundle.putInt("position",position)
-                                    val city = "Gomel"
+                                    //
+                                    //val city = "Gomel"
+                                    //
                                     bundle.putString("city",city)
                                     val date = LocalDateTime.now().plusDays(position.toLong()).format(
                                         DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
