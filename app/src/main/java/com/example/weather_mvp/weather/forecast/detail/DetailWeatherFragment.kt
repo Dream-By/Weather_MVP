@@ -29,7 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class DetailWeatherFragment : Fragment(),City_Name {
+class DetailWeatherFragment : Fragment() {
 
     companion object {
         fun newInstance() =
@@ -48,17 +48,13 @@ class DetailWeatherFragment : Fragment(),City_Name {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(DetailWeatherViewModel::class.java)
-        // TODO: Use the ViewModel
 
         val weatherApi = WeatherApi()
         val position = arguments?.getInt("position")
         val city = arguments?.getString("city")
         val date = arguments?.getString("date")
 
-
-        if (city != null) {
-            City_Name(city)
-        }
+        activity?.toolbar?.setTitle("Подробно погода: $city")
 
         GlobalScope.launch(Dispatchers.Main) {
 
@@ -73,10 +69,5 @@ class DetailWeatherFragment : Fragment(),City_Name {
         }
 
 
-    }
-
-    override fun City_Name(city: String) {
-        textViewToday.text = "$city"
-        activity?.toolbar?.setTitle("Подробно погода: $city")
     }
 }

@@ -1,8 +1,6 @@
 package com.example.weather_mvp.weather.forecast
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,21 +9,19 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_mvp.R
-import com.example.weather_mvp.adapters.City_Name
-import com.example.weather_mvp.adapters.List_Position
 import com.example.weather_mvp.adapters.RecyclerItemClickListener
 import com.example.weather_mvp.adapters.WeatherAdapter
 import com.example.weather_mvp.forecast.List
 import com.example.weather_mvp.network.WeatherApi
+import com.example.weather_mvp.utils.Utils.Companion.cityPrefGet
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.forecast_weather.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -34,7 +30,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 
-class ForecastWeatherFragment : Fragment(),City_Name {
+class ForecastWeatherFragment : Fragment() {
 
     companion object {
         fun newInstance() =
@@ -54,13 +50,9 @@ class ForecastWeatherFragment : Fragment(),City_Name {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(ForecastWeatherViewModel::class.java)
 
-        var cityPrefGet : SharedPreferences? = activity?.getSharedPreferences("city", Context.MODE_PRIVATE)
-        var city = cityPrefGet?.getString("city","").toString()
-        if (city == ""){
-            city = "Gomel"
-        }
+        val city = cityPrefGet(activity as AppCompatActivity)
 
-        City_Name(city)
+        activity?.toolbar?.setTitle("Погода на 7 дней, $city")
 
         val weatherApi = WeatherApi()
 
@@ -79,7 +71,7 @@ class ForecastWeatherFragment : Fragment(),City_Name {
             if (rw != null) {
                 rw.layoutManager = LinearLayoutManager(context,LinearLayout.VERTICAL,false)
                 rw.adapter =adapter
-                //кодим для item
+
                 rw.addOnItemTouchListener(
                     RecyclerItemClickListener(
                         activity!!,
@@ -90,13 +82,10 @@ class ForecastWeatherFragment : Fragment(),City_Name {
                             override fun onItemClick(view: View, position: Int) {
                                 Toast.makeText(activity, "position $position", Toast.LENGTH_SHORT)
                                     .show()
-                                //переход на detailfragment
+
                                 try {
                                     val bundle = Bundle()
                                     bundle.putInt("position",position)
-                                    //
-                                    //val city = "Gomel"
-                                    //
                                     bundle.putString("city",city)
                                     val date = LocalDateTime.now().plusDays(position.toLong()).format(
                                         DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
@@ -119,9 +108,5 @@ class ForecastWeatherFragment : Fragment(),City_Name {
                 )
             }
         }
-    }
-
-    override fun City_Name(City: String) {
-        activity?.toolbar?.setTitle("Прогноз погоды на 7 дней, $City")
     }
 }

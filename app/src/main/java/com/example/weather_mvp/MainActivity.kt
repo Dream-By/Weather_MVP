@@ -24,8 +24,6 @@ class MainActivity : AppCompatActivity() {
         //добавляем переменную
         val cityPrefGet : SharedPreferences? = getSharedPreferences("city", Context.MODE_PRIVATE)
         var city = cityPrefGet?.getString("city","")
-        System.out.println("city: " + city)
-        //
         navController = Navigation.findNavController(this,R.id.nav_host_fragment)
         bottom_nav.setupWithNavController(navController)
         NavigationUI.setupActionBarWithNavController(this,navController)

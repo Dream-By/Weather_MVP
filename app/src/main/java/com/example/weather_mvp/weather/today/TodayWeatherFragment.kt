@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavArgument
@@ -21,6 +22,7 @@ import com.example.weather_mvp.R
 import com.example.weather_mvp.adapters.City_Name
 import com.example.weather_mvp.network.WeatherApi
 import com.example.weather_mvp.network.getIconUrl
+import com.example.weather_mvp.utils.Utils.Companion.cityPrefGet
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.today_weather_fragment.*
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +30,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
-class TodayWeatherFragment : Fragment(),City_Name {
+class TodayWeatherFragment : Fragment() {
 
     companion object {
         fun newInstance() =
@@ -50,19 +52,8 @@ class TodayWeatherFragment : Fragment(),City_Name {
         viewModel = ViewModelProviders.of(this).get(TodayWeatherViewModel::class.java)
         //делаем sharedpreferences
 
-            var cityPrefGet : SharedPreferences? = activity?.getSharedPreferences("city", Context.MODE_PRIVATE)
-            var city = cityPrefGet?.getString("city","").toString()
-            if (city == ""){
-                city = "Gomel"
-            }
-
-        // if (arguments !=null ) {
-       //     city = arguments?.getString("city").toString()
-        //}
-
-
-        City_Name(city)
-        System.out.println("city: - " + city)
+        val city = cityPrefGet(activity as AppCompatActivity)
+        activity?.toolbar?.setTitle("Текущий прогноз, $city")
 
         val weatherApi = WeatherApi()
 
@@ -81,10 +72,6 @@ class TodayWeatherFragment : Fragment(),City_Name {
             textViewDescription.text = weatherDay.weather[0].description
 
         }
-    }
-
-    override fun City_Name(city: String) {
-        activity?.toolbar?.setTitle("Текущий прогноз, $city")
     }
 
 }

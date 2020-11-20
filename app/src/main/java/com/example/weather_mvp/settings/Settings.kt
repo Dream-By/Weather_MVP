@@ -11,10 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.weather_mvp.R
+import com.example.weather_mvp.utils.Utils.Companion.cityPrefPut
 import kotlinx.android.synthetic.main.activity_main.*
 
 class Settings : Fragment() {
@@ -30,8 +32,6 @@ class Settings : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val navController = findNavController()
-
         val view = inflater.inflate(R.layout.settings_fragment, container, false)
 
         val buttonMoscow = view.findViewById<Button>(R.id.buttonMoscow)
@@ -39,36 +39,16 @@ class Settings : Fragment() {
 
         buttonMoscow.setOnClickListener{view->
             Toast.makeText(activity, "Moscow", Toast.LENGTH_LONG).show()
-            try {
-                //организуем sharedpreferences
-                var cityPref : SharedPreferences? = activity?.getSharedPreferences("city",Context.MODE_PRIVATE)
-                val editor = cityPref?.edit()
-                editor?.putString("city","Moscow")?.apply()
-                //
- //               val bundle = Bundle()
- //               val city = "Moscow"
- //               bundle.putString("city",city)
-                //view.findNavController().navigate(R.id.todayWeatherFragment,bundle)
+                cityPrefPut (activity as AppCompatActivity, "Moscow")
                 view.findNavController().navigate(R.id.todayWeatherFragment)
-            }catch (ignored : ClassCastException) {}
         }
 
 
         buttonSaintPetersburg.setOnClickListener { view->
             Toast.makeText(activity, "Saint Petersburg", Toast.LENGTH_LONG).show()
-            try {
-                //val bundle = Bundle()
-                //val city = "Saint Petersburg"
-                //bundle.putString("city",city)
-                var cityPref : SharedPreferences? = activity?.getSharedPreferences("city",Context.MODE_PRIVATE)
-                val editor = cityPref?.edit()
-                editor?.putString("city","Saint Petersburg")?.apply()
-                view.findNavController().navigate(R.id.todayWeatherFragment)
-            }catch (ignored : ClassCastException) {}
+            cityPrefPut (activity as AppCompatActivity, "Saint Petersburg")
+            view.findNavController().navigate(R.id.todayWeatherFragment)
         }
-
-
-        //return inflater.inflate(R.layout.settings_fragment, container, false)
 
         return view
     }
