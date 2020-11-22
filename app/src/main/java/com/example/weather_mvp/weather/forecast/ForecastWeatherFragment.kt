@@ -20,6 +20,7 @@ import com.example.weather_mvp.adapters.RecyclerItemClickListener
 import com.example.weather_mvp.adapters.WeatherAdapter
 import com.example.weather_mvp.forecast.List
 import com.example.weather_mvp.network.WeatherApi
+import com.example.weather_mvp.utils.Utils
 import com.example.weather_mvp.utils.Utils.Companion.cityPrefGet
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
@@ -50,63 +51,69 @@ class ForecastWeatherFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(ForecastWeatherViewModel::class.java)
 
-        val city = cityPrefGet(activity as AppCompatActivity)
+        val networkResult = context?.let { Utils.isInternetAvailable(it) }
+        if (networkResult !=false) {
+            val city = cityPrefGet(activity as AppCompatActivity)
 
-        activity?.toolbar?.setTitle("Погода на 7 дней, $city")
+            activity?.toolbar?.setTitle("Погода на 7 дней, $city")
 
-        val weatherApi = WeatherApi()
+            val weatherApi = WeatherApi()
 
-        GlobalScope.launch(Dispatchers.Main) {
+            GlobalScope.launch(Dispatchers.Main) {
 
-            val weatherForecast = weatherApi.getForecast(city).await()
+                val weatherForecast = weatherApi.getForecast(city).await()
 
-            val adapter = context?.let {
-                WeatherAdapter(
-                    it,
-                    weatherForecast.list as ArrayList<List>
-                )
-            }
+                val adapter = context?.let {
+                    WeatherAdapter(
+                        it,
+                        weatherForecast.list as ArrayList<List>
+                    )
+                }
 
-            val rw : RecyclerView? = view?.findViewById(R.id.rw)
-            if (rw != null) {
-                rw.layoutManager = LinearLayoutManager(context,LinearLayout.VERTICAL,false)
-                rw.adapter =adapter
+                val rw : RecyclerView? = view?.findViewById(R.id.rw)
+                if (rw != null) {
+                    rw.layoutManager = LinearLayoutManager(context,LinearLayout.VERTICAL,false)
+                    rw.adapter =adapter
 
-                rw.addOnItemTouchListener(
-                    RecyclerItemClickListener(
-                        activity!!,
-                        rw,
-                        object :
-                            RecyclerItemClickListener.OnItemClickListener {
-                            @RequiresApi(Build.VERSION_CODES.O)
-                            override fun onItemClick(view: View, position: Int) {
-                                Toast.makeText(activity, "position $position", Toast.LENGTH_SHORT)
-                                    .show()
+                    rw.addOnItemTouchListener(
+                        RecyclerItemClickListener(
+                            activity!!,
+                            rw,
+                            object :
+                                RecyclerItemClickListener.OnItemClickListener {
+                                @RequiresApi(Build.VERSION_CODES.O)
+                                override fun onItemClick(view: View, position: Int) {
+                                    Toast.makeText(activity, "position $position", Toast.LENGTH_SHORT)
+                                        .show()
 
-                                try {
-                                    val bundle = Bundle()
-                                    bundle.putInt("position",position)
-                                    bundle.putString("city",city)
-                                    val date = LocalDateTime.now().plusDays(position.toLong()).format(
-                                        DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
-                                    bundle.putString("date",date)
-                                    view.findNavController().navigate(R.id.detailWeatherFragment,bundle)
+                                    try {
+                                        val bundle = Bundle()
+                                        bundle.putInt("position",position)
+                                        bundle.putString("city",city)
+                                        val date = LocalDateTime.now().plusDays(position.toLong()).format(
+                                            DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
+                                        bundle.putString("date",date)
+                                        view.findNavController().navigate(R.id.detailWeatherFragment,bundle)
                                     }
-                                catch (ignored : ClassCastException) {}
+                                    catch (ignored : ClassCastException) {}
 
-                            }
+                                }
 
-                            override fun onItemLongClick(view: View?, position: Int) {
-                                Toast.makeText(
-                                    activity,
-                                    "It's working onItemLongClick",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
+                                override fun onItemLongClick(view: View?, position: Int) {
 
-                        })
-                )
+                                }
+
+                            })
+                    )
+                }
             }
+        } else {
+            activity?.toolbar?.setTitle("Погода на 7 дней, ")
+            Toast.makeText(activity, "Нет подключения к сети", Toast.LENGTH_LONG).show()
+            view!!.findNavController().navigate(R.id.todayWeatherFragment)
+
         }
+
+
     }
 }

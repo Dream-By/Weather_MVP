@@ -47,12 +47,11 @@ class WeatherAdapter(context: Context,val weatherForecast : ArrayList<List>) : R
 
     override fun getItemCount(): Int {
           return 7 //прогноз на 7 дней
-        //return weatherForecast.size
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        //val weatherArray : Item = weatherForecast[position]
 
         val temp = (weatherForecast[position].main.temp.toFloat()-273.15).toInt().toString()+"°C"
         val description = weatherForecast[position].weather[0].description
