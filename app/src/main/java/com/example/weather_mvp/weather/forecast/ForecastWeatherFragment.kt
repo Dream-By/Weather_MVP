@@ -83,8 +83,8 @@ class ForecastWeatherFragment : Fragment() {
                                 RecyclerItemClickListener.OnItemClickListener {
                                 @RequiresApi(Build.VERSION_CODES.O)
                                 override fun onItemClick(view: View, position: Int) {
-                                    Toast.makeText(activity, "position $position", Toast.LENGTH_SHORT)
-                                        .show()
+                                    //Toast.makeText(activity, "position $position", Toast.LENGTH_SHORT)
+                                     //   .show()
 
                                     try {
                                         val bundle = Bundle()

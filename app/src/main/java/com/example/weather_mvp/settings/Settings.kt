@@ -35,14 +35,14 @@ class Settings : Fragment() {
         val buttonCityOK = view.findViewById<Button>(R.id.buttonCityOK)
 
         buttonMoscow.setOnClickListener{view->
-            Toast.makeText(activity, "Moscow", Toast.LENGTH_LONG).show()
+            //Toast.makeText(activity, "Moscow", Toast.LENGTH_LONG).show()
                 cityPrefPut (activity as AppCompatActivity, "Moscow")
                 view.findNavController().navigate(R.id.todayWeatherFragment)
         }
 
 
         buttonSaintPetersburg.setOnClickListener { view->
-            Toast.makeText(activity, "Saint Petersburg", Toast.LENGTH_LONG).show()
+            //Toast.makeText(activity, "Saint Petersburg", Toast.LENGTH_LONG).show()
             cityPrefPut (activity as AppCompatActivity, "Saint Petersburg")
             view.findNavController().navigate(R.id.todayWeatherFragment)
         }

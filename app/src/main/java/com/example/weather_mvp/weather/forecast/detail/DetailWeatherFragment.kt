@@ -58,6 +58,8 @@ class DetailWeatherFragment : Fragment() {
             textViewTodayTempMinMax.text = (weatherDetail.list[position].main.temp.toFloat()-273.15).toInt().toString() + "°C"+" / "+(weatherDetail.list[position].main.feelsLike.toFloat()-273.15).toInt().toString()+"°C"
             Glide.with(imageView.context).load(getIconUrl + weatherDetail.list[position].weather[0].icon + ".png").into(imageView)
             textViewDescription.text = weatherDetail.list[position].weather[0].description
+            textWind.text = weatherDetail.list[position].wind.speed.toString() + " м/с"
+
         }
 
 
